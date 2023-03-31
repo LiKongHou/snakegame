@@ -26,7 +26,7 @@ public class controlPanel extends JPanel implements ActionListener {
     controlPanel(gamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
-        System.out.println("Main " + running);
+        // System.out.println("Main " + running);
 
         random = new Random();
         try {
@@ -123,9 +123,9 @@ public class controlPanel extends JPanel implements ActionListener {
                 info.setText("Wecome back " + getInfoUser.getText() + " !!!");
                 gamePanel.addKeyListener(new controlReceiver());
 
-                System.out.println(getInfoUser.getText());
-                System.out.println(gamePanel.xDirection);
-                System.out.println("Running Button " + running);
+                // System.out.println(getInfoUser.getText());
+                // System.out.println(gamePanel.xDirection);
+                // System.out.println("Running Button " + running);
 
                 startGame();
             }

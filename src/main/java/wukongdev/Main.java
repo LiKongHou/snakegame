@@ -12,8 +12,8 @@ public class Main {
         gameGui.setLocationRelativeTo(null);
 
         // Dimension size = gameGui.getSize();
-        int width = gameGui.getWidth();
-        int height = gameGui.getHeight();
-        System.out.println("Current size of the frame: " + width + " x " + height);
+        // int width = gameGui.getWidth();
+        // int height = gameGui.getHeight();
+        // System.out.println("Current size of the frame: " + width + " x " + height);
     }
 }

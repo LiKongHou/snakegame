@@ -42,14 +42,14 @@ public class gamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         draw(g);
 
-        System.out.println("Paint Component " + wukongdev.controlPanel.running);
+        // System.out.println("Paint Component " + wukongdev.controlPanel.running);
     }
 
     public void newApple() {
         appleX = controlPanel.random.nextInt((SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
         appleY = controlPanel.random.nextInt((SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
 
-        System.out.println("New Apple " + appleX + " " + appleY);
+        // System.out.println("New Apple " + appleX + " " + appleY);
     }
 
     public void draw(Graphics g) {
@@ -84,7 +84,7 @@ public class gamePanel extends JPanel implements ActionListener {
         } else {
             // gameOver(g);
         }
-        System.out.println("Draw " + wukongdev.controlPanel.running);
+        // System.out.println("Draw " + wukongdev.controlPanel.running);
 
     }
 
@@ -97,22 +97,22 @@ public class gamePanel extends JPanel implements ActionListener {
         switch (wukongdev.controlReceiver.direction) {
             case 'U':
                 yGame[0] = yGame[0] - UNIT_SIZE;
-                System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
+                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'D':
                 yGame[0] = yGame[0] + UNIT_SIZE;
-                System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
+                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'L':
                 xGame[0] = xGame[0] - UNIT_SIZE;
-                System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
+                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'R':
                 xGame[0] = xGame[0] + UNIT_SIZE;
-                System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
+                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             default:
-                System.out.println("HI move");
+                // System.out.println("HI move");
                 break;
         }
 
@@ -124,7 +124,7 @@ public class gamePanel extends JPanel implements ActionListener {
             applesEaten++;
             newApple();
         }
-        System.out.println("Check Apple " + appleX + " " + appleY);
+        // System.out.println("Check Apple " + appleX + " " + appleY);
     }
 
     public void checkCollisions() {
@@ -153,9 +153,9 @@ public class gamePanel extends JPanel implements ActionListener {
 
         if (!wukongdev.controlPanel.running) {
             timer.stop();
-            System.out.println("DIE!");
+            // System.out.println("DIE!");
         }
-        System.out.println("Check Collisions " + wukongdev.controlPanel.running);
+        // System.out.println("Check Collisions " + wukongdev.controlPanel.running);
     }
 
     // private void gameOver(Graphics g) {
@@ -168,7 +168,7 @@ public class gamePanel extends JPanel implements ActionListener {
             checkApple();
             checkCollisions();
 
-            System.out.println("Running " + wukongdev.controlPanel.running);
+            // System.out.println("Running " + wukongdev.controlPanel.running);
         }
         repaint();
     }
