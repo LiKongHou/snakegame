@@ -8,7 +8,7 @@ import java.awt.event.*;
 public class gamePanel extends JPanel implements ActionListener {
     private gamePanel xGamePanel;
     private controlPanel controlPanel;
-    private controlReceiver controlReceiver;
+    controlReceiver controlReceiver;
 
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
@@ -16,11 +16,10 @@ public class gamePanel extends JPanel implements ActionListener {
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / (UNIT_SIZE * UNIT_SIZE);
     final int[] xGame = new int[GAME_UNITS];
     final int[] yGame = new int[GAME_UNITS];
-    int bodyParts = 60;
+    int bodyParts = 6;
     int applesEaten;
     int appleX;
     int appleY;
-    char xDirection;
     Timer timer;
 
     gamePanel() {
@@ -28,12 +27,9 @@ public class gamePanel extends JPanel implements ActionListener {
         controlReceiver = new controlReceiver();
         timer = new Timer(wukongdev.controlPanel.DELAY, (ActionListener) this);
 
-        xDirection = wukongdev.controlReceiver.direction;
-
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
-        // this.addKeyListener(new controlReceiver());
 
     }
 
@@ -41,15 +37,11 @@ public class gamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
-
-        // System.out.println("Paint Component " + wukongdev.controlPanel.running);
     }
 
     public void newApple() {
         appleX = controlPanel.random.nextInt((SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
         appleY = controlPanel.random.nextInt((SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
-
-        // System.out.println("New Apple " + appleX + " " + appleY);
     }
 
     public void draw(Graphics g) {
@@ -57,8 +49,8 @@ public class gamePanel extends JPanel implements ActionListener {
         if (wukongdev.controlPanel.running) {
 
             // for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
-            //     g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-            //     g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
+            // g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
+            // g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
             // }
 
             g.setColor(Color.RED);
@@ -82,9 +74,12 @@ public class gamePanel extends JPanel implements ActionListener {
             // metrics.stringWidth("Score: " + applesEaten)) / 2,
             // g.getFont().getSize());
         } else {
-            // gameOver(g);
+            if (wukongdev.controlPanel.xInfoUser == 0) {
+                gameStart(g);
+            } else {
+                gameOver(g);
+            }
         }
-        // System.out.println("Draw " + wukongdev.controlPanel.running);
 
     }
 
@@ -97,22 +92,17 @@ public class gamePanel extends JPanel implements ActionListener {
         switch (wukongdev.controlReceiver.direction) {
             case 'U':
                 yGame[0] = yGame[0] - UNIT_SIZE;
-                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'D':
                 yGame[0] = yGame[0] + UNIT_SIZE;
-                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'L':
                 xGame[0] = xGame[0] - UNIT_SIZE;
-                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             case 'R':
                 xGame[0] = xGame[0] + UNIT_SIZE;
-                // System.out.println("HI MOVE " + wukongdev.controlReceiver.direction);
                 break;
             default:
-                // System.out.println("HI move");
                 break;
         }
 
@@ -124,7 +114,6 @@ public class gamePanel extends JPanel implements ActionListener {
             applesEaten++;
             newApple();
         }
-        // System.out.println("Check Apple " + appleX + " " + appleY);
     }
 
     public void checkCollisions() {
@@ -153,22 +142,37 @@ public class gamePanel extends JPanel implements ActionListener {
 
         if (!wukongdev.controlPanel.running) {
             timer.stop();
-            // System.out.println("DIE!");
         }
-        // System.out.println("Check Collisions " + wukongdev.controlPanel.running);
     }
 
-    // private void gameOver(Graphics g) {
-    // //
-    // }
+    private void gameOver(Graphics g) {
+        // // Score
+        // g.setColor(Color.red);
+        // g.setFont(new Font("Ink Free", Font.BOLD, 40));
+        // FontMetrics metrics1 = getFontMetrics(g.getFont());
+        // g.drawString("Score: " + applesEaten, (SCREEN_WIDTH -
+        // metrics1.stringWidth("Score: " + applesEaten)) / 2,
+        // g.getFont().getSize());
+        // Game Over text
+        g.setColor(Color.red);
+        g.setFont(controlPanel.customFont04B.deriveFont(Font.PLAIN, 50f));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
+    }
+
+    private void gameStart(Graphics g) {
+        g.setColor(Color.CYAN);
+        g.setFont(controlPanel.customFont04B.deriveFont(Font.PLAIN, 50f));
+        FontMetrics metrics2 = getFontMetrics(g.getFont());
+        g.drawString("Game Start", (SCREEN_WIDTH - metrics2.stringWidth("Game Start")) / 2, SCREEN_HEIGHT / 2);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (wukongdev.controlPanel.running) {
             move();
             checkApple();
             checkCollisions();
-
-            // System.out.println("Running " + wukongdev.controlPanel.running);
         }
         repaint();
     }
