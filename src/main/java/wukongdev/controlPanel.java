@@ -12,6 +12,7 @@ public class controlPanel extends JPanel implements ActionListener {
     private JLabel logo;
     private JLabel info;
     private JLabel userID;
+    private JLabel score;
     private JTextField getInfoUser;
     private JButton doneID;
     private JButton buttonContinue;
@@ -22,7 +23,6 @@ public class controlPanel extends JPanel implements ActionListener {
     private JLabel headerTable;
     private scoreRating scoreRating;
 
-    static final int DELAY = 50;
     static boolean running = false;
     static int xInfoUser;
 
@@ -30,6 +30,7 @@ public class controlPanel extends JPanel implements ActionListener {
 
     Font customFontMinecraft;
     Font customFont04B;
+    Font customFontLouisGeorgeCafe;
     Random random;
 
     controlPanel(gamePanel gamePanel) {
@@ -48,6 +49,10 @@ public class controlPanel extends JPanel implements ActionListener {
             customFont04B = Font.createFont(Font.TRUETYPE_FONT,
                     getClass().getResourceAsStream("fontsGame/04B.ttf"));
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont04B);
+
+            customFontLouisGeorgeCafe = Font.createFont(Font.TRUETYPE_FONT,
+                    getClass().getResourceAsStream("fontsGame/LouisGeorgeCafe.ttf"));
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFontLouisGeorgeCafe);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
@@ -61,7 +66,7 @@ public class controlPanel extends JPanel implements ActionListener {
 
         headerTable = new JLabel();
         headerTable.setText("-- Ranking --");
-        headerTable.setFont(customFontMinecraft.deriveFont(Font.BOLD, 15f));
+        headerTable.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 15f));
         headerTable.setHorizontalAlignment(SwingConstants.CENTER);
         headerTable.setBounds(0, 645, 400, 20);
         headerTable.setVisible(false);
@@ -83,53 +88,65 @@ public class controlPanel extends JPanel implements ActionListener {
 
         info = new JLabel();
         info.setText("Wecome to snakeGame");
-        info.setBounds(0, 95, 400, 20);
+        info.setBounds(0, 90, 400, 15);
         info.setHorizontalAlignment(SwingConstants.CENTER);
-        info.setVerticalAlignment(SwingConstants.TOP);
-        info.setFont(customFontMinecraft.deriveFont(Font.PLAIN, 12f));
+        info.setVerticalAlignment(SwingConstants.CENTER);
+        info.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
 
-        userID = new JLabel("Tên Người Chơi: ");
-        userID.setBounds(ALLBITS, ABORT, 100, 20);
+        userID = new JLabel("Your Name: ");
+        userID.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
+        userID.setBounds(ALLBITS + 20, ABORT, 100, 20);
         FontMetrics metrics1 = getFontMetrics(userID.getFont());
         xTextField = metrics1.stringWidth(userID.getText());
 
         getInfoUser = new JTextField();
-        getInfoUser.setBounds(ALLBITS + xTextField + 20, ABORT, 100, 20);
+        getInfoUser.setBounds(ALLBITS + xTextField + 40, ABORT, 100, 20);
 
-        doneID = new JButton("Lưu");
+        doneID = new JButton("Done");
+        doneID.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
         doneID.setFocusable(false);
         doneID.setBackground(Color.WHITE);
         doneID.setBorder(getBorder());
-        doneID.setBounds(ALLBITS + xTextField + 140, ABORT, 75, 20);
+        doneID.setBounds(ALLBITS + xTextField + 160, ABORT, 75, 20);
         doneID.addActionListener(this);
         doneID.setEnabled(true);
 
         buttonPause = new JButton("Pause");
+        buttonPause.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
         buttonPause.setFocusable(false);
         buttonPause.setBackground(Color.WHITE);
         buttonPause.setBorder(getBorder());
-        buttonPause.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonPause.setBounds(100 - (75 / 2), ABORT, 75, 20);
         buttonPause.addActionListener(this);
         buttonPause.setEnabled(false);
         buttonPause.setVisible(false);
 
         buttonContinue = new JButton("Continue");
+        buttonContinue.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
         buttonContinue.setFocusable(false);
         buttonContinue.setBackground(Color.WHITE);
         buttonContinue.setBorder(getBorder());
-        buttonContinue.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonContinue.setBounds(100 - (75 / 2), ABORT, 75, 20);
         buttonContinue.addActionListener(this);
         buttonContinue.setEnabled(false);
         buttonContinue.setVisible(false);
 
-        buttonStart = new JButton("Start");
+        buttonStart = new JButton("Restart");
+        buttonStart.setFont(customFontLouisGeorgeCafe.deriveFont(Font.BOLD, 12f));
         buttonStart.setFocusable(false);
         buttonStart.setBackground(Color.WHITE);
         buttonStart.setBorder(getBorder());
-        buttonStart.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonStart.setBounds(300 - (75 / 2), ABORT, 75, 20);
         buttonStart.addActionListener(this);
         buttonStart.setEnabled(false);
         buttonStart.setVisible(false);
+
+        score = new JLabel();
+        score.setBounds(0, 175, 400, 20);
+        score.setHorizontalAlignment(SwingConstants.CENTER);
+        score.setVerticalAlignment(SwingConstants.CENTER);
+        score.setFont(customFontLouisGeorgeCafe.deriveFont(Font.PLAIN, 15f));
+        score.setVisible(false);
 
         this.setPreferredSize(new Dimension(400, 800));
         this.setBackground(Color.LIGHT_GRAY);
@@ -141,18 +158,12 @@ public class controlPanel extends JPanel implements ActionListener {
         this.add(buttonPause);
         this.add(buttonContinue);
         this.add(buttonStart);
+        this.add(score);
         this.add(logo);
         this.add(info);
         this.add(headerTable);
         this.add(jScrollPane);
 
-    }
-
-    public void checkGame() {
-        buttonContinue.setVisible(false);
-        buttonPause.setVisible(false);
-        buttonStart.setEnabled(true);
-        buttonStart.setVisible(true);
     }
 
     public void startGame() {
@@ -161,15 +172,13 @@ public class controlPanel extends JPanel implements ActionListener {
         gamePanel.timer.start();
     }
 
-    public void stopGame() {
-        running = false;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
+        score.setText("Your Score: " + wukongdev.gamePanel.applesEaten * 10);
+
         if (e.getSource() == doneID) {
             if (getInfoUser.getText().length() == 0) {
-                userID.setText("Nhập Tên Người Chơi: ");
+                userID.setText("Enter Your Name: ");
 
                 FontMetrics metrics1 = getFontMetrics(userID.getFont());
                 xTextField = metrics1.stringWidth(userID.getText());
@@ -188,6 +197,11 @@ public class controlPanel extends JPanel implements ActionListener {
                 jScrollPane.setVisible(true);
                 buttonPause.setEnabled(true);
                 buttonPause.setVisible(true);
+                buttonStart.setEnabled(true);
+                score.setVisible(true);
+                Timer timer = new Timer(0, (ActionListener) this);
+                timer.start();
+                buttonStart.setVisible(true);
                 startGame();
             }
         }
@@ -197,7 +211,7 @@ public class controlPanel extends JPanel implements ActionListener {
             buttonContinue.setEnabled(true);
             buttonContinue.setVisible(true);
             running = false;
-            gamePanel.message = "Pause";
+            wukongdev.gamePanel.message = "Pause";
         }
         if (e.getSource() == buttonContinue) {
             buttonContinue.setEnabled(false);
@@ -205,12 +219,19 @@ public class controlPanel extends JPanel implements ActionListener {
             buttonPause.setEnabled(true);
             buttonPause.setVisible(true);
             running = true;
-            gamePanel.message = "Game Over";
+            wukongdev.gamePanel.message = "Game Over";
         }
         if (e.getSource() == buttonStart) {
             running = true;
+            wukongdev.gamePanel.bodyParts = 6;
+            wukongdev.gamePanel.applesEaten = 0;
+            gamePanel.newSnake();
             gamePanel.newApple();
             gamePanel.timer.start();
+            buttonContinue.setEnabled(false);
+            buttonContinue.setVisible(false);
+            buttonPause.setEnabled(true);
+            buttonPause.setVisible(true);
         }
     }
 }

@@ -13,20 +13,21 @@ public class gamePanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 800;
     static final int SCREEN_HEIGHT = 800;
     static final int UNIT_SIZE = 10;
+    static final int DELAY = 40;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / (UNIT_SIZE * UNIT_SIZE);
     final int[] xGame = new int[GAME_UNITS];
     final int[] yGame = new int[GAME_UNITS];
-    int bodyParts = 6;
-    int applesEaten;
-    static int appleX;
-    static int appleY;
+    static int bodyParts = 6;
+    static int applesEaten;
+    int appleX;
+    int appleY;
     static String message;
     Timer timer;
 
     gamePanel() {
         controlPanel = new controlPanel(xGamePanel);
         controlReceiver = new controlReceiver();
-        timer = new Timer(wukongdev.controlPanel.DELAY, (ActionListener) this);
+        timer = new Timer(DELAY, (ActionListener) this);
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.DARK_GRAY);
@@ -43,6 +44,16 @@ public class gamePanel extends JPanel implements ActionListener {
     public void newApple() {
         appleX = controlPanel.random.nextInt((SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
         appleY = controlPanel.random.nextInt((SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
+    }
+
+    public void newSnake() {
+        wukongdev.controlReceiver.direction = 'R';
+        for (int i = 0; i < 6; i++) {
+            xGame[i] = 0;
+            yGame[i] = 0;
+        }
+        draw(getGraphics());
+
     }
 
     public void draw(Graphics g) {
@@ -123,27 +134,32 @@ public class gamePanel extends JPanel implements ActionListener {
             if ((xGame[0] == xGame[i]) && (yGame[0] == yGame[i])) {
                 wukongdev.controlPanel.running = false;
                 message = "Game Over";
+                applesEaten = 0;
             }
         }
         // check if head touches left border
         if (xGame[0] < 0) {
             wukongdev.controlPanel.running = false;
             message = "Game Over";
+            applesEaten = 0;
         }
         // check if head touches right border
         if (xGame[0] > SCREEN_WIDTH) {
             wukongdev.controlPanel.running = false;
             message = "Game Over";
+            applesEaten = 0;
         }
         // check if head touches top border
         if (yGame[0] < 0) {
             wukongdev.controlPanel.running = false;
             message = "Game Over";
+            applesEaten = 0;
         }
         // check if head touches bottom border
         if (yGame[0] > SCREEN_HEIGHT) {
             wukongdev.controlPanel.running = false;
             message = "Game Over";
+            applesEaten = 0;
         }
 
         if (!wukongdev.controlPanel.running) {
@@ -152,14 +168,6 @@ public class gamePanel extends JPanel implements ActionListener {
     }
 
     private void displayGameOver(Graphics g) {
-        // // Score
-        // g.setColor(Color.red);
-        // g.setFont(new Font("Ink Free", Font.BOLD, 40));
-        // FontMetrics metrics1 = getFontMetrics(g.getFont());
-        // g.drawString("Score: " + applesEaten, (SCREEN_WIDTH -
-        // metrics1.stringWidth("Score: " + applesEaten)) / 2,
-        // g.getFont().getSize());
-        // Game Over text
         g.setColor(Color.red);
         g.setFont(controlPanel.customFont04B.deriveFont(Font.PLAIN, 50f));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
