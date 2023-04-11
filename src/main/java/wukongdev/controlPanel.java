@@ -14,12 +14,15 @@ public class controlPanel extends JPanel implements ActionListener {
     private JLabel userID;
     private JTextField getInfoUser;
     private JButton doneID;
+    private JButton buttonContinue;
+    private JButton buttonPause;
+    private JButton buttonStart;
     private JScrollPane jScrollPane;
     private gamePanel gamePanel;
     private JLabel headerTable;
     private scoreRating scoreRating;
 
-    static final int DELAY = 75;
+    static final int DELAY = 50;
     static boolean running = false;
     static int xInfoUser;
 
@@ -57,13 +60,16 @@ public class controlPanel extends JPanel implements ActionListener {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
         headerTable = new JLabel();
-        headerTable.setText("Top Score");
-        headerTable.setFont(customFont04B.deriveFont(Font.BOLD, 15f));
+        headerTable.setText("-- Ranking --");
+        headerTable.setFont(customFontMinecraft.deriveFont(Font.BOLD, 15f));
         headerTable.setHorizontalAlignment(SwingConstants.CENTER);
-        headerTable.setBounds(0, 650, 400, 15);
+        headerTable.setBounds(0, 645, 400, 20);
+        headerTable.setVisible(false);
 
         jScrollPane.setPreferredSize(new Dimension(400, 103));
         jScrollPane.setBounds(25, 670, 350, 105);
+        jScrollPane.setBorder(null);
+        jScrollPane.setVisible(false);
 
         logo = new JLabel(scaledIcon);
         logo.setText("Snake Game");
@@ -98,6 +104,33 @@ public class controlPanel extends JPanel implements ActionListener {
         doneID.addActionListener(this);
         doneID.setEnabled(true);
 
+        buttonPause = new JButton("Pause");
+        buttonPause.setFocusable(false);
+        buttonPause.setBackground(Color.WHITE);
+        buttonPause.setBorder(getBorder());
+        buttonPause.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonPause.addActionListener(this);
+        buttonPause.setEnabled(false);
+        buttonPause.setVisible(false);
+
+        buttonContinue = new JButton("Continue");
+        buttonContinue.setFocusable(false);
+        buttonContinue.setBackground(Color.WHITE);
+        buttonContinue.setBorder(getBorder());
+        buttonContinue.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonContinue.addActionListener(this);
+        buttonContinue.setEnabled(false);
+        buttonContinue.setVisible(false);
+
+        buttonStart = new JButton("Start");
+        buttonStart.setFocusable(false);
+        buttonStart.setBackground(Color.WHITE);
+        buttonStart.setBorder(getBorder());
+        buttonStart.setBounds(200 - (75 / 2), ABORT, 75, 20);
+        buttonStart.addActionListener(this);
+        buttonStart.setEnabled(false);
+        buttonStart.setVisible(false);
+
         this.setPreferredSize(new Dimension(400, 800));
         this.setBackground(Color.LIGHT_GRAY);
         this.setLayout(null);
@@ -105,6 +138,9 @@ public class controlPanel extends JPanel implements ActionListener {
         this.add(userID);
         this.add(getInfoUser);
         this.add(doneID);
+        this.add(buttonPause);
+        this.add(buttonContinue);
+        this.add(buttonStart);
         this.add(logo);
         this.add(info);
         this.add(headerTable);
@@ -112,11 +148,17 @@ public class controlPanel extends JPanel implements ActionListener {
 
     }
 
+    public void checkGame() {
+        buttonContinue.setVisible(false);
+        buttonPause.setVisible(false);
+        buttonStart.setEnabled(true);
+        buttonStart.setVisible(true);
+    }
+
     public void startGame() {
         running = true;
         gamePanel.newApple();
         gamePanel.timer.start();
-
     }
 
     public void stopGame() {
@@ -142,9 +184,33 @@ public class controlPanel extends JPanel implements ActionListener {
                 info.setText("Wecome back " + getInfoUser.getText() + " !!!");
                 gamePanel.addKeyListener(new controlReceiver());
                 xInfoUser = getInfoUser.getText().length();
-                // scoreRating.setVisible(true);
+                headerTable.setVisible(true);
+                jScrollPane.setVisible(true);
+                buttonPause.setEnabled(true);
+                buttonPause.setVisible(true);
                 startGame();
             }
+        }
+        if (e.getSource() == buttonPause) {
+            buttonPause.setEnabled(false);
+            buttonPause.setVisible(false);
+            buttonContinue.setEnabled(true);
+            buttonContinue.setVisible(true);
+            running = false;
+            gamePanel.message = "Pause";
+        }
+        if (e.getSource() == buttonContinue) {
+            buttonContinue.setEnabled(false);
+            buttonContinue.setVisible(false);
+            buttonPause.setEnabled(true);
+            buttonPause.setVisible(true);
+            running = true;
+            gamePanel.message = "Game Over";
+        }
+        if (e.getSource() == buttonStart) {
+            running = true;
+            gamePanel.newApple();
+            gamePanel.timer.start();
         }
     }
 }

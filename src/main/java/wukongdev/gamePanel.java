@@ -18,8 +18,9 @@ public class gamePanel extends JPanel implements ActionListener {
     final int[] yGame = new int[GAME_UNITS];
     int bodyParts = 6;
     int applesEaten;
-    int appleX;
-    int appleY;
+    static int appleX;
+    static int appleY;
+    static String message;
     Timer timer;
 
     gamePanel() {
@@ -75,9 +76,9 @@ public class gamePanel extends JPanel implements ActionListener {
             // g.getFont().getSize());
         } else {
             if (wukongdev.controlPanel.xInfoUser == 0) {
-                gameStart(g);
+                displayGameStart(g);
             } else {
-                gameOver(g);
+                displayGameOver(g);
             }
         }
 
@@ -121,23 +122,28 @@ public class gamePanel extends JPanel implements ActionListener {
         for (int i = bodyParts; i > 0; i--) {
             if ((xGame[0] == xGame[i]) && (yGame[0] == yGame[i])) {
                 wukongdev.controlPanel.running = false;
+                message = "Game Over";
             }
         }
         // check if head touches left border
         if (xGame[0] < 0) {
             wukongdev.controlPanel.running = false;
+            message = "Game Over";
         }
         // check if head touches right border
         if (xGame[0] > SCREEN_WIDTH) {
             wukongdev.controlPanel.running = false;
+            message = "Game Over";
         }
         // check if head touches top border
         if (yGame[0] < 0) {
             wukongdev.controlPanel.running = false;
+            message = "Game Over";
         }
         // check if head touches bottom border
         if (yGame[0] > SCREEN_HEIGHT) {
             wukongdev.controlPanel.running = false;
+            message = "Game Over";
         }
 
         if (!wukongdev.controlPanel.running) {
@@ -145,7 +151,7 @@ public class gamePanel extends JPanel implements ActionListener {
         }
     }
 
-    private void gameOver(Graphics g) {
+    private void displayGameOver(Graphics g) {
         // // Score
         // g.setColor(Color.red);
         // g.setFont(new Font("Ink Free", Font.BOLD, 40));
@@ -157,10 +163,10 @@ public class gamePanel extends JPanel implements ActionListener {
         g.setColor(Color.red);
         g.setFont(controlPanel.customFont04B.deriveFont(Font.PLAIN, 50f));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
+        g.drawString(message, (SCREEN_WIDTH - metrics2.stringWidth(message)) / 2, SCREEN_HEIGHT / 2);
     }
 
-    private void gameStart(Graphics g) {
+    private void displayGameStart(Graphics g) {
         g.setColor(Color.CYAN);
         g.setFont(controlPanel.customFont04B.deriveFont(Font.PLAIN, 50f));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
@@ -175,5 +181,6 @@ public class gamePanel extends JPanel implements ActionListener {
             checkCollisions();
         }
         repaint();
+
     }
 }

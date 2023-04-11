@@ -8,11 +8,11 @@ public class scoreRating extends JTable {
     scoreRating() {
         String[] headDataTable = { "ID", "Names", "Scores", "Time" };
         Object[][] dataScoreTable = {
-                { 1, "Default", 99, "20/07/2002" },
-                { 2, "Default", 98, "20/07/2002" },
-                { 3, "Default", 97, "20/07/2002" },
-                { 4, "Default", 96, "20/07/2002" },
-                { 5, "Default", 95, "20/07/2002" } };
+                { 1, "DefaultZ", 99, "20/07/200Z" },
+                { 2, "DefaultX", 98, "20/07/200X" },
+                { 3, "DefaultC", 97, "20/07/200C" },
+                { 4, "DefaultV", 96, "20/07/200V" },
+                { 5, "DefaultB", 95, "20/07/200B" } };
         this.setModel(new DefaultTableModel(dataScoreTable, headDataTable));
 
         TableColumn columnId = this.getColumnModel().getColumn(0);
@@ -28,6 +28,10 @@ public class scoreRating extends JTable {
         this.getColumnModel().getColumn(2).setCellRenderer(new CenterRenderer());
         this.getColumnModel().getColumn(3).setCellRenderer(new CenterRenderer());
 
+        this.getTableHeader().setResizingAllowed(false);
+        this.getTableHeader().setReorderingAllowed(false);
+
+        this.setBorder(null);
         this.setShowGrid(false);
         this.setEnabled(false);
         this.setVisible(true);
